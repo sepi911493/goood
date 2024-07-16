@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: Unlicensed
+pragma solidity ^0.8.0;
+
+contract HelloWorld {
+    uint256 public storedInteger;
+    mapping(address => uint256) public balanceOf;
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
+    function increment() public {
+        storedInteger += 1;
+    }
+
+    function mint(address _to, uint256 _amount) public {
+        balanceOf[_to] += _amount;
+    }
+
+    function transferTokens(address _from, address _to, uint256 _amount) public {
+        require(balanceOf[_from] >= _amount, "Insufficient balance");
+        require(_to != address(0), "Invalid recipient address");
+
+        balanceOf[_from] -= _amount;
+        balanceOf[_to] += _amount;
+
+        emit Transfer(_from, _to, _amount);
+    }
+}
